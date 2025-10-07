@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — Руководитель</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    <header class="header">
+        <a href="{% url 'home' %}"  class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <aspan class="logo-text">JobMatch</span>
+        </a>
+    </header>
+
+    <div class="register-container">
+        <div class="role-switch">
+            <a href="{% url 'candidate' %}" class="role-btn">Кандидат</a>
+            <a href="{% url 'leader' %}" class="role-btn active">Руководитель</a>
+        </div>
+
+        <form class="register-form" method="post">
+            {% csrf_token %}
+            <label for="fio">ФИО</label>
+            <input type="text" id="fio" name="fio" placeholder="Иванов Иван Иванович" required>
+
+            <label for="email">Почта</label>
+            <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+
+            <label for="company">Название компании</label>
+            <input type="text" id="company" name="company" placeholder="ООО 'Пример'" required>
+
+            <label for="city">Город компании</label>
+            <input type="text" id="city" name="city" placeholder="Москва" required>
+
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+
+            <label for="password2">Повторите пароль</label>
+            <input type="password" id="password2" name="password2" placeholder="Повторите пароль" required>
+
+            <button type="submit">Зарегистрироваться</button>
+
+            <p class="register-text">
+                Есть аккаунт? <a href="{% url 'login' %}">Авторизоваться</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>

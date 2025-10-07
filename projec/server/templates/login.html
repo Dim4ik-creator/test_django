@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+
+<body>
+    <header class="header">
+        <a href="{% url 'home' %}"  class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <aspan class="logo-text">JobMatch</span>
+        </a>
+    </header>
+
+    <div class="login-container">
+        <form class="login-form" method="post">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="form-errors" style="color:red; margin-bottom:10px;">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Ошибка сервера / кастомная -->
+            {% if error %}
+                <p class="error" style="color:red; margin-bottom:10px;">{{ error }}</p>
+            {% endif %}
+
+            <label for="email">Логин</label>
+            <input type="email" id="email" name="email" placeholder="Example@gmail.ru" required>
+
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+
+            <button type="submit">Вход</button>
+
+            <p class="register-text">
+                Нет аккаунта? <a href="{% url 'candidate' %}">Зарегистрироваться</a>
+            </p>
+        </form>
+
+        <div class="circle"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <a href="{% url 'home' %}"  class="logo">
+            <img src="static/png/logo.png" alt="Logo" class="logo-img">
+            <aspan class="logo-text">JobMatch</span>
+        </a>
+        <div class="auth-buttons">
+            <button onclick="window.location.href='{% url 'login' %}'" class="btn-outline">Авторизация</button>
+            <button onclick="window.location.href='{% url 'candidate' %}'" class="btn-solid">Регистрация</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="overlay">
+            <h1>Соедини талант с возможностями</h1>
+            <div class="buttons">
+                <button onclick="window.location.href='{% url 'leader' %}'">Для работодателей</button>
+                <button onclick="window.location.href='{% url 'candidate' %}'">Для кандидатов</button>
+                <button>О нас</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div>
+            <p>Политика конфиденциальности</p>
+            <p>Пользовательское соглашение</p>
+        </div>
+    </footer>
+</body>
+</html>
