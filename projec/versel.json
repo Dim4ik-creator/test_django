@@ -1,5 +1,4 @@
 {
-  "buildCommand": "python3 manage.py collectstatic --noinput",
   "builds": [
     { "src": "manage.py", "use": "@vercel/python" }
   ],
