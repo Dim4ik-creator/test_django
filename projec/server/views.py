@@ -1,8 +1,9 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.http import HttpResponseNotFound
 from django.views.generic import TemplateView, CreateView, FormView
 from django.urls import reverse_lazy
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import LoginForm
 
@@ -61,6 +62,7 @@ class RegisterCandidatePageView(CreateView):
         form.instance.password = make_password(form.instance.password)
         return super().form_valid(form)
 
+
 class RegisterLeaderPageView(CreateView):
     model = Leader
     template_name = "register_leader.html"
@@ -72,6 +74,9 @@ class RegisterLeaderPageView(CreateView):
         return super().form_valid(form)
 
 
+def logout_view(request):
+    request.session.flush()
+    return redirect("home")
 
 
 def page_not_found(request, exception):

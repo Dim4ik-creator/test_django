@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobMatch — Кандидат</title>
-    <link rel="stylesheet" href="static/css/home.css">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
     <header class="header">
-        <a href="{% url 'home' %}"  class="logo">
+        <a href="{% url 'candidate_home' %}"  class="logo">
             <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
             <aspan class="logo-text">JobMatch</span>
 
@@ -18,13 +19,13 @@
             <a href="#" class="nav-link">Вакансии</a>
         </nav>
 
-        <button class="logout-btn">Выйти</button>
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">logout</button>
         </a>
     </header>
 
     <main class="main-content">
         <div class="welcome">
-            <h1>Добро пожаловать, кандидат!</h1>
+            <h1>Добро пожаловать, {{ request.session.user_name }}!</h1>
             <p>Здесь вы можете искать вакансии, создавать резюме и откликаться на интересные предложения.</p>
             <button class="main-btn">Найти работу</button>
         </div>

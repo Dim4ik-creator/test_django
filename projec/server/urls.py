@@ -6,6 +6,7 @@ urlpatterns = [
     path("login/", LoginPageView.as_view(), name="login"),
     path("register/leader/", RegisterLeaderPageView.as_view(), name="leader"),
     path("registe/candidate/", RegisterCandidatePageView.as_view(), name="candidate"),
+    path('logout/', logout_view, name='logout'),
 
     # После входа
     path('home/candidate/', HomeCandidatePageView.as_view(), name='candidate_home'),
