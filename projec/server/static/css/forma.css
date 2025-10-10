@@ -1,0 +1,142 @@
+/* ====== Общие стили ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #ffffff, #2a2a4a);
+    color: #14276d;
+    padding-top: 80px;
+}
+
+/* ====== Header ====== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    background: transparent;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #0d47a1;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.logo:hover {
+    color: #1976d2;
+    transform: scale(1.03);
+}
+
+.logo img {
+    height: 35px;
+    width: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 22px;
+}
+
+/* ====== Контейнер ====== */
+.feedback-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+}
+
+.feedback-container h1 {
+    font-size: 24px;
+    color: #14276d;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* ====== Форма ====== */
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.feedback-form label {
+    font-weight: 700;
+    color: #14276d;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+    border: none;
+    outline: none;
+    background: #cfe2ee;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    color: #0e1a3c;
+    width: 100%;
+}
+
+.feedback-form textarea {
+    resize: none;
+    height: 100px;
+    border-radius: 20px;
+}
+
+.feedback-form input::placeholder,
+.feedback-form textarea::placeholder {
+    color: #7da0ba;
+}
+
+/* ====== Кнопка ====== */
+.feedback-form button {
+    background: #76a8cd;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-form button:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ====== Адаптив ====== */
+@media (max-width: 700px) {
+    .feedback-container {
+        width: 90%;
+        padding: 30px 20px;
+    }
+}

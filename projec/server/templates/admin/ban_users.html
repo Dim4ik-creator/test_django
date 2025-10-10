@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+  <h2>Бан пользователей</h2>
+  <p>Вы хотите забанить следующих пользователей:</p>
+  <ul>
+    {% for user in users %}
+      <li>{{ user.name }} ({{ user.email }})</li>
+    {% endfor %}
+  </ul>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="apply">Применить бан</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обратная связь — JobMatch</title>
+    <link rel="stylesheet" href="{% static 'css/forma.css' %}">
+</head>
+<body>
+
+    <header class="header">
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="JobMatch Logo">
+            <span class="logo-text">JobMatch</span>
+        </a>
+    </header>
+
+    <div class="feedback-container">
+        <h1>Форма обратной связи</h1>
+        <p class="description">
+            Если у вас есть вопросы, предложения или вы хотите сообщить об ошибке — заполните форму ниже.
+            Мы свяжемся с вами как можно скорее!
+        </p>
+        {% if success %}
+            <p style="color:green;">Ваше сообщение успешно отправлено!</p>
+        {% elif error %}
+            <p style="color:red;">{{ error }}</p>
+        {% endif %}
+
+        <form method="post" class="feedback-form">
+            {% csrf_token %}
+            
+            <label for="fio">Ваши фамилия, имя, отчество *</label>
+            <input type="text" id="fio" name="name" placeholder="Иванов Иван Иванович" required>
+
+            <label for="email">Ваш e-mail *</label>
+            <input type="email" id="email" name="email" placeholder="example@mail.ru" required>
+
+            <label for="message">Ваше сообщение *</label>
+            <textarea id="message" name="message" placeholder="Введите текст сообщения..." required></textarea>
+
+            <button type="submit">Отправить сообщение</button>
+        </form>
+    </div>
+
+</body>
+</html>
