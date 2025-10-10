@@ -27,7 +27,6 @@ class LoginPageView(FormView):
 
         # Проверяем кандидата
         candidate = Candidante.objects.filter(email=email).first()
-        print(candidate)
         if candidate :
             if candidate.is_banned:
                 messages.error(self.request, f"Ваш аккаунт заблокирован по причине: {candidate.ban_reason}")
@@ -39,18 +38,15 @@ class LoginPageView(FormView):
 
         # Проверяем руководителя
         leader = Leader.objects.filter(email=email).first()
-        print(leader)
         if leader:
-            print(3)
             if leader.is_banned:
                 messages.error(self.request, f"Ваш аккаунт заблокирован по причине: {leader.ban_reason}")
-                print(2)
                 return redirect("login")
-            if check_password(password, candidate.password):
+            if check_password(password, leader.password):
                 self.request.session['user_type'] = 'leader'
                 self.request.session['user_name'] = leader.name
-                print(1)
                 return redirect('leader_home')
+
 
         # Если не найден
         return self.form_invalid(form)
@@ -143,6 +139,9 @@ class FormaPageView(View):
                 "message": message,
             })
 
+
+class AboutUsPageView(TemplateView):
+    template_name = "about_us.html"
 
 def logout_view(request):
     request.session.flush()

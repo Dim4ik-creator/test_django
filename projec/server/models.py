@@ -44,8 +44,8 @@ class Leader(models.Model):
     
 
 class Candidante(models.Model):
-    name = models.CharField(max_length=50, blank=False, unique=True)
-    email = models.CharField(max_length=50, blank=False)
+    name = models.CharField(max_length=50, blank=False)
+    email = models.CharField(max_length=50, blank=False,  unique=True)
     password = models.CharField(max_length=128, blank=False)
     is_banned = models.BooleanField(default=False)
     ban_reason = models.TextField(blank=True, null=True, verbose_name="Причина блокировки")

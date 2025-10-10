@@ -12,5 +12,6 @@ urlpatterns = [
     path('home/candidate/', HomeCandidatePageView.as_view(), name='candidate_home'),
     path('home/leader/', HomeLeaderPageView.as_view(), name='leader_home'),
 
-    path("forma/",FormaPageView.as_view(), name="forma")
+    path("forma/", FormaPageView.as_view(), name="forma"),
+    path("about-us/", AboutUsPageView.as_view(), name="about-us")
 ]

@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас | JobMatch</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="{% url 'home' %}"  class="logo">
+            <img src="{% static "png/logo.png" %} " alt="Logo" class="logo-img">
+            <aspan class="logo-text">JobMatch</span>
+        </a>
+        <div class="auth-buttons">
+            <button onclick="window.location.href='{% url 'login' %}'" class="btn-outline">Авторизация</button>
+            <button onclick="window.location.href='{% url 'candidate' %}'" class="btn-solid">Регистрация</button>
+        </div>
+    </header>
+
+    <!-- Hero / основной блок с картинкой -->
+    <section class="hero-about">
+        <div class="overlay">
+            <h1>JobMatch</h1>
+        </div>
+    </section>
+
+    <!-- Основной текст -->
+    <section class="about-text">
+        <p>
+            <strong>JobMatch</strong> — это современная платформа для поиска работы и подбора кандидатов.
+            Мы соединяем работодателей и соискателей, упрощая процесс трудоустройства и поиска талантов.
+        </p>
+        <p>
+            Платформа предлагает удобный интерфейс, безопасную регистрацию и персонализированные рекомендации
+            для каждого пользователя.
+        </p>
+
+        <h2>Наша миссия</h2>
+        <p>
+            Мы стремимся сделать процесс поиска работы прозрачным, быстрым и комфортным для всех участников рынка труда.
+        </p>
+
+        <h2>Контакты</h2>
+        <p>Email: support@jobmatch.com Телефон: +7 (989) 529-04-53</p>
+        <p>Телефон: +7 (989) 529-04-53</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div>
+            <p>Политика конфиденциальности</p>
+            <p>Пользовательское соглашение</p>
+            <button onclick="window.location.href='{% url 'forma' %}'">Форма обратной связи</button>
+        </div>
+    </footer>
+</body>
+</html>
