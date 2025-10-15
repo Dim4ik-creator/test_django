@@ -9,7 +9,7 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from .models import *
 from .forms import *
-
+from .mixins import *
 
 class HomePageView(TemplateView):
     template_name = "index.html"
@@ -48,20 +48,23 @@ class LoginPageView(FormView):
                 return redirect('leader_home')
 
 
-        # Если не найден
         return self.form_invalid(form)
 
 
-class HomeCandidatePageView(TemplateView):
+class HomeCandidatePageView(CandidateOnlyMixin, TemplateView):
+    
     model = Candidante
     template_name = 'home_candidate.html'
     fields = '__all__'
+    login_url = 'login'
+    redirect_field_name = None
 
-
-class HomeLeaderPageView(TemplateView):
+class HomeLeaderPageView(LeaderOnlyMixin, TemplateView):
     model = Candidante
     template_name = 'home_leader.html'
     fields = '__all__'
+    login_url = 'login'
+    redirect_field_name = None
 
 
 class RegisterCandidatePageView(CreateView):
@@ -120,7 +123,7 @@ class FormaPageView(View):
                 body=message,
                 from_email=settings.EMAIL_HOST_USER,
                 to=[settings.EMAIL_HOST_USER],
-                reply_to=[email]  # сюда кладём почту пользователя
+                reply_to=[email]
             )
 
             email_message.send(fail_silently=False)
@@ -142,6 +145,10 @@ class FormaPageView(View):
 
 class AboutUsPageView(TemplateView):
     template_name = "about_us.html"
+
+
+class TermsPageView(TemplateView):
+    template_name = "terms.html"
 
 def logout_view(request):
     request.session.flush()

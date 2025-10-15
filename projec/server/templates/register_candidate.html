@@ -55,6 +55,13 @@
             
             <button type="submit">Зарегистрироваться</button>
 
+            <div class="terms">
+                <input type="checkbox" id="agree" name="agree" required>
+                <label for="agree">
+                    Я согласен с <a href="{% url 'terms' %}" target="_blank">условиями пользовательского соглашения</a>
+                </label>
+            </div>
+
             <p class="register-text">
                 Есть аккаунт? <a href="{% url 'login' %}">Авторизоваться</a>
             </p>

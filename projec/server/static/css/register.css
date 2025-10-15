@@ -156,6 +156,32 @@ body {
     color: #1976d2;
 }
 
+.terms {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #14276d;
+    margin-top: 10px;
+}
+
+.terms input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #76a8cd; /* Цвет галочки под твой стиль */
+    cursor: pointer;
+}
+
+.terms a {
+    color: #0d47a1;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.terms a:hover {
+    color: #1976d2;
+}
 
 
 /* ====== Адаптив ====== */

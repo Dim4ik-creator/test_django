@@ -67,7 +67,6 @@ body {
 
 .btn-outline,
 .btn-solid {
-    border: 1px solid #1a3263;
     border-radius: 20px;
     padding: 8px 18px;
     font-size: 14px;
