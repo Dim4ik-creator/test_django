@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobMatch — Кандидат</title>
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 <body>
     <header class="header">
@@ -15,19 +15,22 @@
 
         <nav class="nav">
             <a href="{% url 'candidate_home' %}" class="nav-link active">Главная</a>
-            <a href="{% url 'profile_candidate' %}" class="nav-link">Профиль</a>
-            <a href="#" class="nav-link">Вакансии</a>
         </nav>
 
         <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">logout</button>
         </a>
     </header>
 
-    <main class="main-content">
-        <div class="welcome">
-            <h1>Добро пожаловать, {{ request.session.user_name }}!</h1>
-            <p>Здесь вы можете искать вакансии, создавать резюме и откликаться на интересные предложения.</p>
-            <button class="main-btn">Найти работу</button>
+    <main class="profile-container">
+        <div class="profile-card">
+            <h1>Профиль кандидата</h1>
+            <div class="profile-info">
+                <p><strong>Имя:</strong> {{ request.session.user_name }}</p>
+                <p><strong>Email:</strong> {{ request.session.user_email }}</p>
+                <p><strong>Навыки:</strong> {{ user.skills }}</p>
+                <p><strong>Опыт работы:</strong> {{ user.experience }}</p>
+            </div>
+            <button class="btn-edit">Редактировать профиль</button>
         </div>
     </main>
     

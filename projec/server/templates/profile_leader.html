@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch — Лидер</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <header class="header">
+        <a href="{% url 'leader_home' %}"  class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <aspan class="logo-text">JobMatch</span>
+
+        <nav class="nav">
+            <a href="{% url 'leader_home' %}" class="nav-link active">Главная</a>
+        </nav>
+
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">logout</button>
+        </a>
+    </header>
+
+
+</body>
+</html>

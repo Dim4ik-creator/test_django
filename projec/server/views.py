@@ -11,67 +11,90 @@ from .models import *
 from .forms import *
 from .mixins import *
 
+
 class HomePageView(TemplateView):
     template_name = "index.html"
 
 
 class LoginPageView(FormView):
     template_name = "login.html"
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy("home")
     form_class = LoginForm
 
-
     def form_valid(self, form):
-        email = form.cleaned_data['email']
-        password = form.cleaned_data['password']
+        email = form.cleaned_data["email"]
+        password = form.cleaned_data["password"]
 
         # Проверяем кандидата
         candidate = Candidante.objects.filter(email=email).first()
-        if candidate :
+        if candidate:
             if candidate.is_banned:
-                messages.error(self.request, f"Ваш аккаунт заблокирован по причине: {candidate.ban_reason}")
+                messages.error(
+                    self.request,
+                    f"Ваш аккаунт заблокирован по причине: {candidate.ban_reason}",
+                )
                 return redirect("login")
             if check_password(password, candidate.password):
-                self.request.session['user_type'] = 'candidate'
-                self.request.session['user_name'] = candidate.name
-                return redirect('candidate_home')
+                self.request.session["user_type"] = "candidate"
+                self.request.session["user_name"] = candidate.name
+                self.request.session["user_email"] = candidate.email
+                return redirect("candidate_home")
 
         # Проверяем руководителя
         leader = Leader.objects.filter(email=email).first()
         if leader:
             if leader.is_banned:
-                messages.error(self.request, f"Ваш аккаунт заблокирован по причине: {leader.ban_reason}")
+                messages.error(
+                    self.request,
+                    f"Ваш аккаунт заблокирован по причине: {leader.ban_reason}",
+                )
                 return redirect("login")
             if check_password(password, leader.password):
-                self.request.session['user_type'] = 'leader'
-                self.request.session['user_name'] = leader.name
-                return redirect('leader_home')
-
+                self.request.session["user_type"] = "leader"
+                self.request.session["user_name"] = leader.name
+                return redirect("leader_home")
 
         return self.form_invalid(form)
 
 
 class HomeCandidatePageView(CandidateOnlyMixin, TemplateView):
-    
     model = Candidante
-    template_name = 'home_candidate.html'
-    fields = '__all__'
-    login_url = 'login'
+    template_name = "home_candidate.html"
+    fields = "__all__"
+    login_url = "login"
     redirect_field_name = None
 
+
 class HomeLeaderPageView(LeaderOnlyMixin, TemplateView):
-    model = Candidante
-    template_name = 'home_leader.html'
-    fields = '__all__'
-    login_url = 'login'
+    model = Leader
+    template_name = "home_leader.html"
+    fields = "__all__"
+    login_url = "login"
     redirect_field_name = None
+
+
+# Профиль для кандидата
+class ProfCandadatePageView(CandidateOnlyMixin, TemplateView):
+    model = Candidante
+    template_name = "profile_candidate.html"
+    fields = "__all__"
+
+# Профиль для руководителя
+class ProfleaderPageView(LeaderOnlyMixin, TemplateView):
+    template_name = "profile_leader.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        candidate = self.request.user.candidate
+        context['tasks'] = candidate.task_set.all()  # или своя логика
+        return context
 
 
 class RegisterCandidatePageView(CreateView):
     model = Candidante
     template_name = "register_candidate.html"
     form_class = RegisterCandidanteForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy("login")
 
     def form_valid(self, form):
         form.instance.password = make_password(form.instance.password)
@@ -82,7 +105,7 @@ class RegisterLeaderPageView(CreateView):
     model = Leader
     template_name = "register_leader.html"
     form_class = RegisterLeaderForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy("login")
 
     def form_valid(self, form):
         form.instance.password = make_password(form.instance.password)
@@ -106,16 +129,20 @@ class FormaPageView(View):
         message = request.POST.get("message")
 
         # сохраняем в сессию
-        request.session['contact_name'] = name
-        request.session['contact_email'] = email
-        request.session['contact_message'] = message
+        request.session["contact_name"] = name
+        request.session["contact_email"] = email
+        request.session["contact_message"] = message
         if not name or not email or not message:
-            return render(request, self.template_name, {
-                "error": "Все поля обязательны для заполнения.",
-                "name": name,
-                "email": email,
-                "message": message,
-            })
+            return render(
+                request,
+                self.template_name,
+                {
+                    "error": "Все поля обязательны для заполнения.",
+                    "name": name,
+                    "email": email,
+                    "message": message,
+                },
+            )
 
         try:
             email_message = EmailMessage(
@@ -123,33 +150,41 @@ class FormaPageView(View):
                 body=message,
                 from_email=settings.EMAIL_HOST_USER,
                 to=[settings.EMAIL_HOST_USER],
-                reply_to=[email]
+                reply_to=[email],
             )
 
             email_message.send(fail_silently=False)
 
             # очищаем сессию после успешной отправки
-            for key in ('contact_name', 'contact_email', 'contact_message'):
+            for key in ("contact_name", "contact_email", "contact_message"):
                 request.session.pop(key, None)
 
             return render(request, self.template_name, {"success": True})
 
         except Exception as e:
-            return render(request, self.template_name, {
-                "error": f"Ошибка при отправке письма: {e}",
-                "name": name,
-                "email": email,
-                "message": message,
-            })
+            return render(
+                request,
+                self.template_name,
+                {
+                    "error": f"Ошибка при отправке письма: {e}",
+                    "name": name,
+                    "email": email,
+                    "message": message,
+                },
+            )
 
 
+# Страница о нас
 class AboutUsPageView(TemplateView):
     template_name = "about_us.html"
 
 
+# Страница формы(обратной связи)
 class TermsPageView(TemplateView):
     template_name = "terms.html"
 
+
+# Функция для выхода из аккаунта
 def logout_view(request):
     request.session.flush()
     return redirect("home")

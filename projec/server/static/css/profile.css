@@ -1,0 +1,176 @@
+/* ====== Общие стили ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffffff, #2a2a4a);
+    color: #0d1b2a;
+}
+
+/* ====== Header ====== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #14276d;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.logo-img {
+    height: 35px;
+    width: 40px;
+    margin-right: 10px;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid #14276d;
+    padding: 8px 20px;
+    border-radius: 25px;
+    color: #14276d;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background: #14276d;
+    color: white;
+}
+
+/* ====== Профиль ====== */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+}
+
+.profile-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.profile-card h1 {
+    color: #14276d;
+    margin-bottom: 25px;
+}
+
+.profile-info {
+    text-align: left;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.profile-info strong {
+    color: #0d47a1;
+}
+
+.btn-edit {
+    background: #76a8cd;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-edit:hover {
+    background: #1565c0;
+    transform: scale(1.05);
+}
+
+/* ===== Кнопка выхода ===== */
+.logout-btn {
+    background: #76a8cd;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #1565c0;
+    transform: scale(1.05);
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #14276d;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #1976d2;
+}
+
+.nav-link.active {
+    color: #1976d2;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #0d47a1;
+    transition: color 0.3s ease;
+}
+
+.logo:hover {
+    color: #1976d2;
+}
+
+.logo img {
+    height: 35px;
+    width: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 22px;
+}
+
+/* ====== Адаптив ====== */
+@media (max-width: 600px) {
+    .profile-card {
+        padding: 25px;
+    }
+        .logout-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    .welcome h1 {
+        font-size: 22px;
+    }
+}
