@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobMatch — Лидер</title>
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 <body>
     <header class="header">
@@ -14,13 +14,27 @@
             <aspan class="logo-text">JobMatch</span>
 
         <nav class="nav">
-            <a href="{% url 'leader_home' %}" class="nav-link active">Главная</a>
+            <a href="{% url 'leader_home' %}" class="nav-link">Главная</a>
+            <a href="{% url 'profile_leader' %}" class="nav-link active">Профиль</a>
+            <a href="#" class="nav-link">Мои вакансии</a>
         </nav>
 
         <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">logout</button>
         </a>
     </header>
 
+    <main class="profile-container">
+        <div class="profile-card">
+            <h1>Профиль руководителя</h1>
+            <div class="profile-info">
+                <p><strong>Имя:</strong> {{ leader.name }}</p>
+                <p><strong>Email:</strong> {{ leader.email }}</p>
+                <p><strong>Компания:</strong> {{ leader.company }}</p>
+                <p><strong>Город компании:</strong> {{ leader.city }}</p>
+            </div>
+            <button class="btn-edit">Редактировать профиль</button>
+        </div>
+    </main>
 
 </body>
 </html>

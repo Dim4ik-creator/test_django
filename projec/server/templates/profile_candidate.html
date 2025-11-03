@@ -14,7 +14,9 @@
             <aspan class="logo-text">JobMatch</span>
 
         <nav class="nav">
-            <a href="{% url 'candidate_home' %}" class="nav-link active">Главная</a>
+            <a href="{% url 'candidate_home' %}" class="nav-link">Главная</a>
+            <a href="{% url 'profile_candidate' %}" class="nav-link active">Профиль</a>
+            <a href="#" class="nav-link">Вакансии</a>
         </nav>
 
         <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">logout</button>
@@ -24,15 +26,42 @@
     <main class="profile-container">
         <div class="profile-card">
             <h1>Профиль кандидата</h1>
-            <div class="profile-info">
-                <p><strong>Имя:</strong> {{ request.session.user_name }}</p>
-                <p><strong>Email:</strong> {{ request.session.user_email }}</p>
-                <p><strong>Навыки:</strong> {{ user.skills }}</p>
-                <p><strong>Опыт работы:</strong> {{ user.experience }}</p>
-            </div>
-            <button class="btn-edit">Редактировать профиль</button>
+
+            <form id="editForm" method="POST" action="{% url 'edit_profile_candidate' %}">
+                {% csrf_token %}
+                
+                <div class="profile-info">
+                    <label><strong>Имя:</strong></label>
+                    <input type="text" name="name" value="{{ candidate.name }}" readonly>
+
+                    <label><strong>Email:</strong></label>
+                    <input type="email" name="email" value="{{ candidate.email }}" readonly>
+
+                    {% comment %} <label><strong>Навыки:</strong></label>
+                    <input type="text" name="skills" value="{{ candidate.skills }}" readonly>
+
+                    <label><strong>Опыт работы:</strong></label>
+                    <input type="text" name="experience" value="{{ candidate.experience }}" readonly> {% endcomment %}
+                </div>
+
+                <div class="buttons">
+                    <button type="button" id="editBtn" class="btn-edit">Редактировать профиль</button>
+                    <button type="submit" id="saveBtn" class="btn-save" style="display:none;">Сохранить</button>
+                </div>
+            </form>
         </div>
-    </main>
+
+    <script>
+        const editBtn = document.getElementById("editBtn");
+        const saveBtn = document.getElementById("saveBtn");
+        const inputs = document.querySelectorAll("#editForm input");
+
+        editBtn.addEventListener("click", () => {
+            inputs.forEach(input => input.removeAttribute("readonly"));
+            editBtn.style.display = "none";
+            saveBtn.style.display = "inline-block";
+        });
+    </script>
     
 </body>
 </html>

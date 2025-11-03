@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch — Кандидат</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+    <header class="header">
+        <a href="{% url 'candidate_home' %}"  class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <aspan class="logo-text">JobMatch</span>
+
+        <nav class="nav">
+            <a href="{% url 'candidate_home' %}" class="nav-link">Главная</a>
+            <a href="{% url 'profile_candidate' %}" class="nav-link active">Профиль</a>
+            <a href="#" class="nav-link">Вакансии</a>
+        </nav>
+
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">logout</button>
+        </a>
+    </header>
+
+    <main class="profile-container">
+        <div class="profile-card">
+            <h1>Профиль кандидата</h1>
+            <div class="profile-info">
+                <form method="post">
+                    {% csrf_token %}
+                    <p><strong>Имя:</strong> {{ candidate.name }}</p>
+                    <p><strong>Email:</strong> {{ candidate.email }}</p>
+                    <p><strong>Навыки:</strong> {{ user.skills }}</p>
+                    <p><strong>Опыт работы:</strong> {{ user.experience }}</p>
+                    <button type="submit" class="btn-save">Сохранить изменения</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+</body>
+</html>

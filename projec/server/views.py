@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponseNotFound
-from django.views.generic import TemplateView, CreateView, FormView
+from django.views.generic import TemplateView, CreateView, FormView, UpdateView
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.hashers import make_password, check_password
@@ -52,6 +52,9 @@ class LoginPageView(FormView):
             if check_password(password, leader.password):
                 self.request.session["user_type"] = "leader"
                 self.request.session["user_name"] = leader.name
+                self.request.session["user_email"] = leader.email
+                self.request.session["user_company"] = leader.company
+                self.request.session["user_company_city"] = leader.city
                 return redirect("leader_home")
 
         return self.form_invalid(form)
@@ -74,20 +77,64 @@ class HomeLeaderPageView(LeaderOnlyMixin, TemplateView):
 
 
 # Профиль для кандидата
-class ProfCandadatePageView(CandidateOnlyMixin, TemplateView):
+class ProfCandidatePageView(CandidateOnlyMixin, TemplateView):
     model = Candidante
     template_name = "profile_candidate.html"
     fields = "__all__"
-
-# Профиль для руководителя
-class ProfleaderPageView(LeaderOnlyMixin, TemplateView):
-    template_name = "profile_leader.html"
+    login_url = "login"
+    redirect_field_name = None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        candidate = self.request.user.candidate
-        context['tasks'] = candidate.task_set.all()  # или своя логика
+        # Получаем текущего кандидата из БД по пользователю
+        candidante_email = self.request.session.get("user_email")
+        candidate = Candidante.objects.filter(email=candidante_email).first()
+        context['candidate'] = candidate
         return context
+    
+
+class EditCandidateProfileView(CandidateOnlyMixin, View):
+
+    def post(self, request):
+        email = request.session.get("user_email")
+        candidate = Candidante.objects.filter(email=email).first()
+
+        if candidate:
+            candidate.name = request.POST.get("name")
+            candidate.email = request.POST.get("email")
+            # candidate.skills = request.POST.get("skills")
+            # candidate.experience = request.POST.get("experience")
+            candidate.save()
+            messages.success(request, "Профиль успешно обновлён!")
+
+        return redirect("profile_candidate")
+
+
+# Профиль для руководителя
+class ProfleaderPageView(LeaderOnlyMixin, UpdateView):
+    model = Leader
+    template_name = "profile_leader.html"
+    fields = "__all__"
+    login_url = "login"
+    redirect_field_name = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Получаем текущего лидера из БД по пользователю
+        leader_email = self.request.session.get("user_email")
+        leader = Leader.objects.filter(email=leader_email).first()
+        context['leader'] = leader
+        return context
+    
+
+class EditLeaderProfileView(CandidateOnlyMixin, UpdateView):
+    model = Candidante
+    template_name = "edit_profile_leader.html"
+    success_url = reverse_lazy("profile_leader")
+
+    def get_object(self, queryset = None):
+        email = self.request.session.get("user_email")
+        return Leader.objects.filter(email=email).first()
 
 
 class RegisterCandidatePageView(CreateView):

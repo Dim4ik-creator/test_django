@@ -15,6 +15,9 @@ urlpatterns = [
     path("forma/", FormaPageView.as_view(), name="forma"),
     path("about-us", AboutUsPageView.as_view(), name="about-us"),
     path("terms/", TermsPageView.as_view(), name="terms"),
-    path("profile/candidate/", ProfCandadatePageView.as_view(), name="profile_candidate"),
-    path("profile/leader/", ProfleaderPageView.as_view(), name="profile_leader")
+    path("profile/candidate/", ProfCandidatePageView.as_view(), name="profile_candidate"),
+    path("profile/leader/", ProfleaderPageView.as_view(), name="profile_leader"),
+
+    path("profile/candidate/edit/", EditCandidateProfileView.as_view(), name="edit_profile_candidate"),
+    path("profile/leader/edit/", EditLeaderProfileView.as_view(), name="edit_profile_leader"),
 ]

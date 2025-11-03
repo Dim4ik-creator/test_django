@@ -122,6 +122,12 @@ body {
     transform: scale(1.05);
 }
 
+/* ===== Навигация ===== */
+.nav {
+    display: flex;
+    gap: 25px;
+}
+
 .nav-link {
     text-decoration: none;
     color: #14276d;
@@ -135,6 +141,7 @@ body {
 
 .nav-link.active {
     color: #1976d2;
+    border-bottom: 2px solid #1976d2;
 }
 
 .logo {
@@ -158,6 +165,22 @@ body {
 .logo-text {
     font-weight: 700;
     font-size: 22px;
+}
+
+.btn-edit, .btn-save {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-edit:hover, .btn-save:hover {
+    background-color: #45a049;
 }
 
 /* ====== Адаптив ====== */
