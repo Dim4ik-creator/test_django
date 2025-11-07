@@ -77,22 +77,26 @@ class HomeLeaderPageView(LeaderOnlyMixin, TemplateView):
 
 
 # Профиль для кандидата
-class ProfCandidatePageView(CandidateOnlyMixin, TemplateView):
-    model = Candidante
-    template_name = "profile_candidate.html"
-    fields = "__all__"
-    login_url = "login"
-    redirect_field_name = None
+class ProfCandidatePageView(CandidateOnlyMixin, View):
+    def get(self, request):
+        email = request.session.get("user_email")
+        candidate = Candidante.objects.filter(email=email).first()
+        context = {"candidate": candidate}
+        return render(request, "profile_candidate.html", context)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Получаем текущего кандидата из БД по пользователю
-        candidante_email = self.request.session.get("user_email")
-        candidate = Candidante.objects.filter(email=candidante_email).first()
-        context['candidate'] = candidate
-        return context
+    def post(self,request):
+        email = request.session.get("user_email")
+        candidate = Candidante.objects.filter(email=email).first()
+
+        candidate.name = request.POST.get("name", candidate.name)
+        candidate.email = request.POST.get("email", candidate.email)
+        request.session['user_email'] = candidate.email
+        request.session['user_name'] = candidate.name
+        candidate.save()
+
+        messages.success(request, "Профиль успешно обновлён!")
+        return redirect("profile_candidate")
     
-
 class EditCandidateProfileView(CandidateOnlyMixin, View):
 
     def post(self, request):
@@ -102,41 +106,55 @@ class EditCandidateProfileView(CandidateOnlyMixin, View):
         if candidate:
             candidate.name = request.POST.get("name")
             candidate.email = request.POST.get("email")
-            # candidate.skills = request.POST.get("skills")
-            # candidate.experience = request.POST.get("experience")
+
             candidate.save()
             messages.success(request, "Профиль успешно обновлён!")
 
         return redirect("profile_candidate")
 
-
 # Профиль для руководителя
-class ProfleaderPageView(LeaderOnlyMixin, UpdateView):
-    model = Leader
-    template_name = "profile_leader.html"
-    fields = "__all__"
-    login_url = "login"
-    redirect_field_name = None
+class ProfleaderPageView(LeaderOnlyMixin, View):
+    def get(self, request):
+        email = request.session.get("user_email")
+        leader = Leader.objects.filter(email=email).first()
+        context = {"leader": leader}
+        return render(request, "profile_leader.html", context)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Получаем текущего лидера из БД по пользователю
-        leader_email = self.request.session.get("user_email")
-        leader = Leader.objects.filter(email=leader_email).first()
-        context['leader'] = leader
-        return context
+    def post(self,request):
+        email = request.session.get("user_email")
+        leader= Leader.objects.filter(email=email).first()
+
+        leader.name = request.POST.get("name", leader.name)
+        leader.email = request.POST.get("email", leader.email)
+        leader.company = request.POST.get("company", leader.company)
+        leader.city = request.POST.get("city", leader.city)
+        
+        request.session['user_email'] = leader.email
+        request.session['user_company'] = leader.company
+        request.session['user_city'] = leader.city
+        request.session['user_name'] = leader.name
+        leader.save()
+
+        messages.success(request, "Профиль успешно обновлён!")
+        return redirect("profile_leader")
     
 
-class EditLeaderProfileView(CandidateOnlyMixin, UpdateView):
-    model = Candidante
-    template_name = "edit_profile_leader.html"
-    success_url = reverse_lazy("profile_leader")
+class EditLeaderProfileView(LeaderOnlyMixin, View):
+    def post(self, request):
+        email = request.session.get("user_email")
+        leader = Leader.objects.filter(email=email).first()
 
-    def get_object(self, queryset = None):
-        email = self.request.session.get("user_email")
-        return Leader.objects.filter(email=email).first()
+        if leader:
+            leader.name = request.POST.get("name")
+            leader.email = request.POST.get("email")
+            # candidate.skills = request.POST.get("skills")
+            # candidate.experience = request.POST.get("experience")
+            leader.save()
+            messages.success(request, "Профиль успешно обновлён!")
 
-
+        return redirect("profile_leader")
+    
+    
 class RegisterCandidatePageView(CreateView):
     model = Candidante
     template_name = "register_candidate.html"

@@ -78,16 +78,6 @@ body {
     margin-bottom: 25px;
 }
 
-.profile-info {
-    text-align: left;
-    line-height: 1.8;
-    margin-bottom: 20px;
-}
-
-.profile-info strong {
-    color: #0d47a1;
-}
-
 .btn-edit {
     background: #76a8cd;
     border: none;
@@ -182,7 +172,168 @@ body {
 .btn-edit:hover, .btn-save:hover {
     background-color: #45a049;
 }
+/* ====== Форма редактирования профиля ====== */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 20px;
+    text-align: left;
+}
 
+.profile-form label {
+    font-weight: 600;
+    color: #14276d;
+    font-size: 15px;
+}
+.profile-info label {
+    display: flex;
+    flex-direction: column;
+    text-align: left;;
+}
+.profile-form input[type="text"],
+.profile-form input[type="email"],
+.profile-form input[type="password"],
+.profile-form textarea,
+.profile-form select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid rgba(20, 39, 109, 0.3);
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    color: #0d1b2a;
+}
+
+.profile-form input:focus,
+.profile-form textarea:focus,
+.profile-form select:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
+    background: #ffffff;
+}
+
+.profile-form textarea {
+    resize: none;
+    min-height: 100px;
+}
+
+.btn-save {
+    background: #1976d2;
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-save:hover {
+    background: #1565c0;
+    transform: scale(1.05);
+}
+
+/* ===== Анимация успеха/ошибки ===== */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: fixed;       /* фиксируем уведомления */
+    top: 20px;             /* отступ сверху */
+    right: 20px;           /* отступ справа */
+    z-index: 1000;
+}
+
+.messages .success {
+    background: rgba(76, 175, 80, 0.15);
+    color: #2e7d32;
+    border-left: 4px solid #4caf50;
+}
+
+.messages .error {
+    background: rgba(244, 67, 54, 0.15);
+    color: #b71c1c;
+    border-left: 4px solid #f44336;
+}
+
+.messages .warning {
+    background: rgba(255, 193, 7, 0.15);
+    color: #795548;
+    border-left: 4px solid #ffc107;
+}
+
+.messages .info {
+    background: rgba(33, 150, 243, 0.15);
+    color: #1565c0;
+    border-left: 4px solid #2196f3;
+}
+.messages li {
+    background-color: #444;
+    color: white;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+/* ====== Поля редактирования ====== */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-info label {
+    font-weight: 600;
+    color: #0d1b2a;
+    margin-bottom: 5px;
+}
+
+.profile-info input {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 25px;
+    background-color: #cfe2ee;
+    font-size: 15px;
+    color: #0d1b2a;
+    transition: all 0.3s ease;
+}
+
+.profile-info input:focus {
+    background-color: #bbdefb;
+    outline: none;
+    box-shadow: 0 0 0 2px #1565c0;
+}
+
+.profile-info input[readonly] {
+    background-color: #cfe2ee;
+    cursor: default;
+}
+/* ===== Кнопки ===== */
+.btn-edit, .btn-save {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #1565c0;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover, .btn-save:hover {
+    background-color: #0d47a1;
+    transform: translateY(-2px);
+}
 /* ====== Адаптив ====== */
 @media (max-width: 600px) {
     .profile-card {

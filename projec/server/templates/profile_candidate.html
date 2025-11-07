@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobMatch — Кандидат</title>
+    <title>JobMatch — Профиль кандидата</title>
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 <body>
     <header class="header">
-        <a href="{% url 'candidate_home' %}"  class="logo">
+        <a href="{% url 'candidate_home' %}" class="logo">
             <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
-            <aspan class="logo-text">JobMatch</span>
+            <span class="logo-text">JobMatch</span>
+        </a>
 
         <nav class="nav">
             <a href="{% url 'candidate_home' %}" class="nav-link">Главная</a>
@@ -19,29 +20,35 @@
             <a href="#" class="nav-link">Вакансии</a>
         </nav>
 
-        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">logout</button>
-        </a>
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
     </header>
-
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
     <main class="profile-container">
         <div class="profile-card">
             <h1>Профиль кандидата</h1>
 
-            <form id="editForm" method="POST" action="{% url 'edit_profile_candidate' %}">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <form id="editForm" method="POST">
                 {% csrf_token %}
-                
                 <div class="profile-info">
-                    <label><strong>Имя:</strong></label>
-                    <input type="text" name="name" value="{{ candidate.name }}" readonly>
+                    <label for="name">Имя</label>
+                    <input type="text" id="name" name="name" value="{{ candidate.name }}" readonly>
 
-                    <label><strong>Email:</strong></label>
-                    <input type="email" name="email" value="{{ candidate.email }}" readonly>
-
-                    {% comment %} <label><strong>Навыки:</strong></label>
-                    <input type="text" name="skills" value="{{ candidate.skills }}" readonly>
-
-                    <label><strong>Опыт работы:</strong></label>
-                    <input type="text" name="experience" value="{{ candidate.experience }}" readonly> {% endcomment %}
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ candidate.email }}" readonly>
                 </div>
 
                 <div class="buttons">
@@ -50,7 +57,7 @@
                 </div>
             </form>
         </div>
-
+    </main>
     <script>
         const editBtn = document.getElementById("editBtn");
         const saveBtn = document.getElementById("saveBtn");
@@ -60,6 +67,19 @@
             inputs.forEach(input => input.removeAttribute("readonly"));
             editBtn.style.display = "none";
             saveBtn.style.display = "inline-block";
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.messages li');
+            messages.forEach((msg, index) => {
+                // через 3 секунды начинаем анимацию
+                setTimeout(() => {
+                    msg.style.opacity = '0';
+                    msg.style.transform = 'translateY(-20px)'; // поднимаем вверх
+                    // через 0.8 секунды удаляем элемент
+                    setTimeout(() => msg.remove(), 800);
+                }, 3000 + index * 200); // добавляем небольшую задержку для красивого эффекта по очереди
+            });
         });
     </script>
     

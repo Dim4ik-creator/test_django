@@ -158,3 +158,4 @@ GitHub.sublime-settings
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+projec/db.sqlite3
