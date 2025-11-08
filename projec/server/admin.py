@@ -122,3 +122,4 @@ class CandidateAdmin(admin.ModelAdmin):
         user.save()
         return redirect(request.META.get('HTTP_REFERER'))
     
+admin.site.register(Jobs)

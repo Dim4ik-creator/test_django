@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch — Руководитель</title>
+    <link rel="stylesheet" href="{% static 'css/vacan.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <a href="{% url 'leader_home' %}"  class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <span class="logo-text">JobMatch</span>
+
+        <nav class="nav">
+            <a href="{% url 'leader_home' %}" class="nav-link ">Главная</a>
+            <a href="{% url 'profile_leader' %}" class="nav-link">Профиль</a>
+            <a href="{% url "my_jobs" %}" class="nav-link active">Мои вакансии</a>
+        </nav>
+
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
+    </header>
+
+<main class="main-content">
+    <div class="jobs-header">
+        <h2>Мои вакансии</h2>
+        <a href="{% url 'create_job' %}" class="create-job-btn">Создать вакансию</a>
+    </div>
+
+    <div class="jobs-list">
+        {% for job in jobs %}
+        <div class="job-card">
+            <div class="job-info">
+                <h3>{{ job.title }}</h3>
+                <p class="job-location">📍 {{ job.location }}</p>
+                <p class="job-salary">💰 {{ job.salary }} ₽</p>
+            </div>
+            <div class="job-actions">
+                <a href="{% url 'job_detail' job.id %}" class="view-btn">Подробнее</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="no-jobs">Вы ещё не добавили вакансии.</p>
+        {% endfor %}
+    </div>
+</main>
+</body>
+</html>

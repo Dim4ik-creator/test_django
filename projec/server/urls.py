@@ -20,4 +20,9 @@ urlpatterns = [
 
     path("profile/candidate/edit/", EditCandidateProfileView.as_view(), name="edit_profile_candidate"),
     path("profile/leader/edit/", EditLeaderProfileView.as_view(), name="edit_profile_leader"),
+    # Вакансии
+    path('jobs/', JobListView.as_view(), name='job_list'),
+    path('jobs/create/', JobCreateView.as_view(), name='create_job'),
+    path('jobs/my/', MyJobsView.as_view(), name='my_jobs'),
+    path('jobs/<int:job_id>/', JobDetailView.as_view(), name='job_detail'),
 ]

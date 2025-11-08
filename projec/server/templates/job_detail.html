@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch — Руководитель</title>
+    <link rel="stylesheet" href="{% static 'css/vacan.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <a href="{% url 'leader_home' %}"  class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <span class="logo-text">JobMatch</span>
+
+        <nav class="nav">
+            <a href="{% url 'leader_home' %}" class="nav-link ">Главная</a>
+            <a href="{% url 'profile_leader' %}" class="nav-link">Профиль</a>
+            <a href="{% url "my_jobs" %}" class="nav-link active">Мои вакансии</a>
+        </nav>
+
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
+    </header>
+
+<main class="main-content">
+
+    <div class="action-block">
+        
+        {% if user_role == 'leader' and is_owner %}
+            
+            <h3 class="section-title">✏️ Редактирование вакансии</h3>
+            
+            <form method="post" class="job-form edit-form"> 
+                {% csrf_token %}
+                <input type="hidden" name="action" value="edit"> 
+
+                <div class="form-group">
+                    <label for="title">Название:</label>
+                    <input type="text" id="title" name="title" value="{{ job.title }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Описание:</label>
+                    <textarea id="description" name="description" required rows="6">{{ job.description }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Город:</label>
+                    <input type="text" id="location" name="location" value="{{ job.location }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="salary">Зарплата:</label>
+                    <input type="number" id="salary" name="salary" value="{{ job.salary }}" required>
+                </div>
+
+                <button type="submit" class="submit-btn primary-btn">Сохранить изменения</button>
+            </form>
+
+            <div class="responses-link-block">
+                <a href="#" class="secondary-btn">
+                    📩 Посмотреть отклики ({{ job.response_set.count }})
+                </a>
+            </div>
+
+            <hr class="divider">
+            
+        {% elif user_role == 'candidate' %}
+            {% else %}
+            {% endif %}
+
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch — Руководитель</title>
+    <link rel="stylesheet" href="{% static 'css/vacan.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <a href="{% url 'leader_home' %}"  class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <span class="logo-text">JobMatch</span>
+
+        <nav class="nav">
+            <a href="{% url 'leader_home' %}" class="nav-link ">Главная</a>
+            <a href="{% url 'profile_leader' %}" class="nav-link">Профиль</a>
+            <a href="{% url "my_jobs" %}" class="nav-link active">Мои вакансии</a>
+        </nav>
+
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
+    </header>
+
+<main class="main-content form-container">
+    <h2>Создать вакансию</h2>
+
+    <form method="post" class="job-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="title">Название:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description" required rows="6"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Город:</label>
+            <input type="text" id="location" name="location" required>
+        </div>
+
+        <div class="form-group">
+            <label for="salary">Зарплата:</label>
+            <input type="number" id="salary" name="salary" required>
+        </div>
+
+        <button type="submit" class="submit-btn">Опубликовать</button>
+    </form>
+
+</main>
+</body>
+</html>
+
+
+
+

@@ -16,7 +16,7 @@
         <nav class="nav">
             <a href="{% url 'leader_home' %}" class="nav-link">Главная</a>
             <a href="{% url 'profile_leader' %}" class="nav-link active">Профиль</a>
-            <a href="#" class="nav-link">Мои вакансии</a>
+            <a href="{% url "my_jobs" %}" class="nav-link">Мои вакансии</a>
         </nav>
 
         <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>

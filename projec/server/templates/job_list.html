@@ -1,0 +1,16 @@
+<h1>Все вакансии</h1>
+<h2>Все вакансии</h2>
+
+<ul>
+  {% for job in jobs %}
+  <li>
+    <a href="{% url 'job_detail' job.id %}">
+      <strong>{{ job.title }}</strong> — {{ job.salary }} ₽
+    </a>
+    <br>
+    <small>{{ job.location }}</small>
+  </li>
+  {% empty %}
+  <li>Пока нет вакансий</li>
+  {% endfor %}
+</ul>

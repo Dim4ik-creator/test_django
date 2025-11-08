@@ -1,6 +1,7 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseNotFound
 from django.views.generic import TemplateView, CreateView, FormView, UpdateView
+from django.db import IntegrityError
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.hashers import make_password, check_password
@@ -249,6 +250,156 @@ class TermsPageView(TemplateView):
     template_name = "terms.html"
 
 
+class JobListView(View):
+    def get(self, request):
+        jobs = Jobs.objects.all().order_by("-created_at")
+        return render(request, "job_list.html", {"jobs": jobs})
+
+
+class JobDetailView(View):
+    
+    def get(self, request, job_id):
+        job = get_object_or_404(Jobs, id=job_id)
+        
+        # Получаем данные из сессии
+        user_type = request.session.get('user_type')
+        user_email = request.session.get('user_email')
+        
+        context = {
+            'job': job,
+            'user_role': 'anonymous',
+            'has_responded': False,
+            'is_owner': False
+        }
+
+        # Проверяем, КАНДИДАТ ли это
+        if user_type == 'candidate' and user_email:
+            try:
+                candidate = Candidante.objects.get(email=user_email)
+                context['user_role'] = 'candidate'
+                # Проверяем, откликался ли ИМЕННО ОН
+                context['has_responded'] = Response.objects.filter(candidate=candidate, job=job).exists()
+            except Candidante.DoesNotExist:
+                # Если в сессии есть email, а в базе нет - чистим сессию
+                messages.error(request, "Ошибка аутентификации. Войдите снова.")
+                request.session.flush() # "Разлогинить" пользователя
+
+        # Проверяем, РУКОВОДИТЕЛЬ ли это
+        elif user_type == 'leader' and user_email:
+            try:
+                # Находим руководителя по email из сессии
+                leader = Leader.objects.get(email=user_email)
+                context['user_role'] = 'leader'
+                
+                # Тот ли это руководитель, кто создал вакансию?
+                if job.leader == leader:
+                    context['is_owner'] = True
+            
+            except Leader.DoesNotExist:
+                messages.error(request, "Ошибка аутентификации. Войдите снова.")
+                request.session.flush()
+
+        return render(request, 'job_detail.html', context)
+    
+    def post(self, request, job_id):
+            # Проверяем, это отклик КАНДИДАТА или редактирование РУКОВОДИТЕЛЯ?
+            action = request.POST.get('action')
+            if action == 'edit':
+                user_type = request.session.get('user_type')
+                user_email = request.session.get('user_email')
+                # Проверка, что это руководитель
+                if user_type != 'leader' or not user_email:
+                    messages.error(request, "Ошибка доступа. Только руководитель может редактировать.")
+                    return redirect("job_detail", job_id=job_id)
+
+                job = get_object_or_404(Jobs, id=job_id)
+                
+                # Находим руководителя и проверяем, что он владелец
+                try:
+                    leader = Leader.objects.get(email=user_email)
+                    if job.leader != leader:
+                        messages.error(request, "У вас нет прав на редактирование этой вакансии.")
+                        return redirect("job_detail", job_id=job_id)
+                except Leader.DoesNotExist:
+                    messages.error(request, "Ошибка аутентификации.")
+                    return redirect("login")
+
+                # Обновление данных
+                try:
+                    job.title = request.POST.get("title")
+                    job.description = request.POST.get("description")
+                    job.location = request.POST.get("location")
+                    job.salary = request.POST.get("salary")
+                    job.save()
+                    messages.success(request, "Вакансия успешно обновлена!")
+                except IntegrityError:
+                    messages.error(request, "Ошибка при сохранении данных. Проверьте введенные значения.")
+                
+                return redirect("job_detail", job_id=job_id)
+            
+            user_type = request.session.get('user_type')
+            user_email = request.session.get('user_email')
+            
+            if user_type != 'candidate' or not user_email:
+                messages.error(request, "Только кандидат может откликнуться.")
+                return redirect("login") 
+
+            try:
+                candidate = Candidante.objects.get(email=user_email)
+            except Candidante.DoesNotExist:
+                messages.error(request, "Ошибка пользователя. Войдите снова.")
+                request.session.flush()
+                return redirect("login")
+
+            job = get_object_or_404(Jobs, id=job_id)
+            message = request.POST.get("message")
+
+            if Response.objects.filter(candidate=candidate, job=job).exists():
+                messages.info(request, "Вы уже откликались на эту вакансию.")
+                return redirect("job_detail", job_id=job_id)
+
+            Response.objects.create(candidate=candidate, job=job, message=message)
+            messages.success(request, "Ваш отклик отправлен.")
+            return redirect("job_detail", job_id=job_id)
+
+class JobCreateView(View):
+    def get(self, request):
+        return render(request, "job_create.html")
+    def post(self, request):
+        email = request.session.get("user_email")
+        leader= Leader.objects.filter(email=email).first()
+        leader_id = leader.id 
+
+        leader = get_object_or_404(Leader, id=leader_id)
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        location = request.POST.get("location")
+        salary = request.POST.get("salary")
+
+        if not all([title, description, location, salary]):
+            messages.error(request, "Заполни все поля.")
+            return redirect("create_job")
+
+        Jobs.objects.create(
+            leader=leader,
+            title=title,
+            description=description,
+            location=location,
+            salary=salary
+        )
+        messages.success(request, "Вакансия успешно опубликована.")
+        return redirect("my_jobs")
+
+# Просмотр вакансий для руководителя
+class MyJobsView(View):
+    def get(self, request):
+        email = request.session.get("user_email")
+        leader= Leader.objects.filter(email=email).first()
+        leader_id = leader.id 
+        leader = get_object_or_404(Leader, id=leader_id)
+        jobs = leader.jobs.all()
+        return render(request, "my_jobs.html", {"jobs": jobs})
+    
 # Функция для выхода из аккаунта
 def logout_view(request):
     request.session.flush()

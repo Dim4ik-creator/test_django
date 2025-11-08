@@ -45,6 +45,7 @@ class Leader(models.Model):
 
 class Candidante(models.Model):
     name = models.CharField(max_length=50, blank=False)
+    bio = models.TextField(blank=True, null=True)
     email = models.CharField(max_length=50, blank=False,  unique=True)
     password = models.CharField(max_length=128, blank=False)
     is_banned = models.BooleanField(default=False)
@@ -80,3 +81,27 @@ class Candidante(models.Model):
 
     def __str__(self):
         return self.name
+
+class Jobs(models.Model):
+    leader = models.ForeignKey(Leader, on_delete=models.CASCADE, related_name='jobs', null=True)
+    title = models.CharField(max_length=255, blank=False)
+    description = models.TextField(blank=False)
+    location = models.CharField(max_length=255, blank=False)
+    salary = models.IntegerField(blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.title
+    
+class Response(models.Model):
+    candidate = models.ForeignKey(Candidante, on_delete=models.CASCADE, related_name="responses")
+    job = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name="responses")
+    message = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('candidate', 'job')  # чтобы нельзя было откликнуться дважды
+
+    def __str__(self):
+        return f"{self.candidate.name} → {self.job.title}"
