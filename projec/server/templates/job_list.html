@@ -1,16 +1,57 @@
-<h1>Все вакансии</h1>
-<h2>Все вакансии</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch — Вакансии</title>
+    <link rel="stylesheet" href="{% static 'css/vacan.css' %}">
+</head>
+<body>
+    <header class="header">
+        <a href="{% url 'candidate_home' %}" class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <span class="logo-text">JobMatch</span>
+        </a>
 
-<ul>
-  {% for job in jobs %}
-  <li>
-    <a href="{% url 'job_detail' job.id %}">
-      <strong>{{ job.title }}</strong> — {{ job.salary }} ₽
-    </a>
-    <br>
-    <small>{{ job.location }}</small>
-  </li>
-  {% empty %}
-  <li>Пока нет вакансий</li>
-  {% endfor %}
-</ul>
+        <nav class="nav">
+            <a href="{% url 'candidate_home' %}" class="nav-link">Главная</a>
+            <a href="{% url 'profile_candidate' %}" class="nav-link">Профиль</a>
+            <a href="{% url "job_list" %}" class="nav-link active">Вакансии</a>
+        </nav>
+
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
+    </header>
+
+    <main class="main-content">
+        <h2 class="jobs-header">Актуальные вакансии</h2>
+        
+        <div class="jobs-list">
+            {% for job in jobs %}
+                <div class="job-card">
+                    <h3>{{ job.title }}</h3>
+                    
+                    <div class="job-info">
+                        <p class="job-salary">
+                            <span class="icon">💰</span> {{ job.salary }} ₽
+                        </p>
+                        <p class="job-location">
+                            <span class="icon">📍</span> {{ job.location }}
+                        </p>
+                        <p class="meta-item company">
+                            <span class="icon">🏢</span> {{ job.leader.company }}
+                        </p>
+                    </div>
+
+                    <a href="{% url 'job_detail' job.id %}" class="detail-link">
+                        Подробнее &rarr;
+                    </a>
+                </div>
+            {% empty %}
+                <p class="empty-message">Пока нет доступных вакансий. Загляните позже!</p>
+            {% endfor %}
+        </div>
+    </main>
+    
+</body>
+</html>

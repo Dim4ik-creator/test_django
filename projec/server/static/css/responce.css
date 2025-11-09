@@ -1,0 +1,149 @@
+/* --- Общие контейнеры --- */
+.responses-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.page-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #2a73ff;
+}
+
+.page-header h2 {
+    font-size: 2rem;
+    color: #14276d;
+}
+
+.response-count {
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* --- Ссылка "Назад" (использует secondary-btn из vacan.css) --- */
+.back-link {
+    display: inline-flex;
+    margin-bottom: 25px;
+}
+
+/* --- Список и карточка отклика --- */
+.responses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.response-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Разделяем инфо и сообщение */
+    gap: 30px;
+    align-items: start;
+}
+
+/* --- Информация о кандидате --- */
+.candidate-info {
+    border-right: 1px solid #eee;
+    padding-right: 20px;
+}
+
+.candidate-name {
+    font-size: 1.4rem;
+    color: #2a73ff;
+    margin-bottom: 10px;
+}
+
+.candidate-meta {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.candidate-meta .icon, .response-date .icon {
+    margin-right: 8px;
+    color: #6a8ce2;
+}
+
+.response-date {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* --- Сопроводительное письмо --- */
+.message-block {
+    padding-left: 10px;
+}
+
+.message-title {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 2px dashed #f0f0f0;
+    padding-bottom: 5px;
+}
+
+.message-text {
+    line-height: 1.6;
+    color: #444;
+}
+
+.message-empty {
+    color: #999;
+    font-style: italic;
+}
+
+/* --- Действия --- */
+.response-actions {
+    grid-column: 1 / -1; /* Растягиваем на всю ширину */
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    text-align: right;
+}
+
+/* Кнопка "Смотреть профиль" (использует primary-btn) */
+.profile-btn {
+    background-color: #2a73ff;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+/* --- Если нет откликов --- */
+.empty-responses {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+}
+
+.no-responses {
+    font-size: 1.3rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* --- Адаптивность --- */
+@media (max-width: 768px) {
+    .response-card {
+        grid-template-columns: 1fr; /* На узких экранах делаем одну колонку */
+        gap: 20px;
+    }
+    
+    .candidate-info {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding-right: 0;
+        padding-bottom: 15px;
+    }
+}

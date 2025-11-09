@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch — Отклики на {{ job.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/vacan.css' %}">
+    <link rel="stylesheet" href="{% static 'css/response_list.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <a href="{% url 'leader_home' %}" class="logo">
+            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+            <span class="logo-text">JobMatch</span>
+        </a>
+
+        <nav class="nav">
+            <a href="{% url 'leader_home' %}" class="nav-link">Главная</a>
+            <a href="{% url 'profile_leader' %}" class="nav-link">Профиль</a>
+            <a href="{% url "my_jobs" %}" class="nav-link active">Мои вакансии</a> 
+        </nav>
+
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
+    </header>
+
+    <main class="main-content">
+        <div class="responses-container">
+
+            <div class="page-header">
+                <h2>Отклики на вакансию: **{{ job.title }}**</h2>
+                <p class="response-count">Всего откликов: **{{ responses|length }}**</p>
+            </div>
+            
+            <a href="{% url 'job_detail' job.id %}" class="back-link secondary-btn">
+                ← Вернуться к вакансии
+            </a>
+
+            <div class="responses-list">
+                {% for response in responses %}
+                    <div class="response-card">
+                        
+                        <div class="candidate-info">
+                            <h3 class="candidate-name">
+                                {{ response.candidate.name }} {{ response.candidate.last_name }} 
+                            </h3>
+                            <p class="candidate-meta">
+                                <span class="icon">📧</span> {{ response.candidate.email }}
+                            </p>
+                            {% comment %} <p class="candidate-meta">
+                                <span class="icon">📍</span> {{ response.candidate.city|default:"Не указан" }}
+                            </p> {% endcomment %}
+                            <p class="response-date">
+                                <span class="icon">⏰</span> Отправлен: {{ response.created_at|date:"d M Y в H:i" }}
+                            </p>
+                        </div>
+                        
+                        <div class="message-block">
+                            <h4 class="message-title">Сопроводительное письмо:</h4>
+                            {% if response.message %}
+                                <p class="message-text">{{ response.message|linebreaksbr }}</p>
+                            {% else %}
+                                <p class="message-empty">Кандидат не приложил сопроводительное письмо.</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="response-actions">
+                            <a href="#" class="primary-btn profile-btn">
+                                Смотреть Профиль
+                            </a>
+                            </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-responses">
+                        <p class="no-responses">На эту вакансию пока нет откликов.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</body>
+</html>

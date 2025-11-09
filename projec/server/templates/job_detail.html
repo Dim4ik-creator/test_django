@@ -4,28 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobMatch — Руководитель</title>
+    <title>JobMatch — {{ job.title }}</title>
     <link rel="stylesheet" href="{% static 'css/vacan.css' %}">
 </head>
 
 <body>
     <header class="header">
-        <a href="{% url 'leader_home' %}"  class="logo">
-            <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
-            <span class="logo-text">JobMatch</span>
-
-        <nav class="nav">
-            <a href="{% url 'leader_home' %}" class="nav-link ">Главная</a>
-            <a href="{% url 'profile_leader' %}" class="nav-link">Профиль</a>
-            <a href="{% url "my_jobs" %}" class="nav-link active">Мои вакансии</a>
-        </nav>
+        {% if user_role == 'leader' %}
+            <a href="{% url 'leader_home' %}" class="logo">
+                <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+                <span class="logo-text">JobMatch</span>
+            </a>
+            <nav class="nav">
+                <a href="{% url 'leader_home' %}" class="nav-link ">Главная</a>
+                <a href="{% url 'profile_leader' %}" class="nav-link">Профиль</a>
+                <a href="{% url "my_jobs" %}" class="nav-link active">Мои вакансии</a>
+            </nav>
+        {% elif user_role == 'candidate' %}
+            <a href="{% url 'candidate_home' %}" class="logo">
+                <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+                <span class="logo-text">JobMatch</span>
+            </a>
+            <nav class="nav">
+                <a href="{% url 'candidate_home' %}" class="nav-link">Главная</a>
+                <a href="{% url 'profile_candidate' %}" class="nav-link">Профиль</a>
+                <a href="{% url "job_list" %}" class="nav-link active">Вакансии</a>
+            </nav>
+        {% else %}
+            <a href="/" class="logo">
+                <img src="{% static 'png/logo.png' %}" alt="Logo" class="logo-img">
+                <span class="logo-text">JobMatch</span>
+            </a>
+            <nav class="nav">
+                <a href="{% url 'login' %}" class="nav-link">Войти</a>
+                <a href="{% url 'register_candidate' %}" class="nav-link">Регистрация</a>
+            </nav>
+        {% endif %}
 
         <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
     </header>
 
 <main class="main-content">
-
-    <div class="action-block">
+    <div class="job-detail-card">
         
         {% if user_role == 'leader' and is_owner %}
             
@@ -34,42 +54,75 @@
             <form method="post" class="job-form edit-form"> 
                 {% csrf_token %}
                 <input type="hidden" name="action" value="edit"> 
-
-                <div class="form-group">
-                    <label for="title">Название:</label>
-                    <input type="text" id="title" name="title" value="{{ job.title }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Описание:</label>
-                    <textarea id="description" name="description" required rows="6">{{ job.description }}</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="location">Город:</label>
-                    <input type="text" id="location" name="location" value="{{ job.location }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="salary">Зарплата:</label>
-                    <input type="number" id="salary" name="salary" value="{{ job.salary }}" required>
-                </div>
+                
+                <div class="form-group"><label for="title">Название:</label><input type="text" id="title" name="title" value="{{ job.title }}" required></div>
+                <div class="form-group"><label for="description">Описание:</label><textarea id="description" name="description" required rows="6">{{ job.description }}</textarea></div>
+                <div class="form-group"><label for="location">Город:</label><input type="text" id="location" name="location" value="{{ job.location }}" required></div>
+                <div class="form-group"><label for="salary">Зарплата:</label><input type="number" id="salary" name="salary" value="{{ job.salary }}" required></div>
 
                 <button type="submit" class="submit-btn primary-btn">Сохранить изменения</button>
             </form>
 
-            <div class="responses-link-block">
-                <a href="#" class="secondary-btn">
-                    📩 Посмотреть отклики ({{ job.response_set.count }})
+            <div class="leader-actions-top">
+                <button type="button" class="delete-btn" 
+                        onclick="if(confirm('Вы уверены, что хотите удалить эту вакансию? Это действие необратимо.')) { 
+                                    document.getElementById('delete-form').submit(); 
+                                }">
+                    ❌ Удалить вакансию
+                </button>
+
+                <a href="{% url "view_responses" job.id %}" class="secondary-btn view-responses-btn">
+                    📩 Посмотреть отклики
                 </a>
+                
+                <form method="post" id="delete-form" style="display:none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="delete"> 
+                </form>
+            </div>
+            
+            
+        {% endif %}
+        
+
+        {% if user_role == 'candidate' %}
+            <h1 class="job-title">{{ job.title }}</h1>
+            
+            <div class="job-meta">
+                <p class="meta-item">
+                    <span class="icon">💰</span> {{ job.salary }} ₽
+                </p>
+                <p class="meta-item">
+                    <span class="icon">📍</span> {{ job.location }}
+                </p>
+                <p class="meta-item">
+                    <span class="icon">🏢</span> {{ job.leader.company }}
+                </p>
+            </div>
+        
+        <hr class="divider">
+            <div class="action-block">
+                {% if has_responded %}
+                    <p class="response-info success">Вы уже откликнулись на эту вакансию.</p>
+                {% else %}
+                    <h3 class="section-title">✍️ Откликнуться</h3>
+                    <form method="post" class="response-form">
+                        {% csrf_token %}
+                        <label for="message">Сопроводительное письмо (необязательно):</label>
+                        <textarea name="message" id="message" rows="5" placeholder="Расскажите о себе, почему вы подходите..."></textarea>
+                        <button type="submit" class="respond-btn submit-btn">Откликнуться</button>
+                    </form>
+                {% endif %}
             </div>
 
-            <hr class="divider">
+        {% elif user_role == 'anonymous' %}
+            <div class="auth-promo">
+                <p>Чтобы откликнуться на вакансию, пожалуйста, <a href="{% url 'login' %}">войдите</a> или <a href="{% url 'register_candidate' %}">зарегистрируйтесь</a> как кандидат.</p>
+            </div>
             
-        {% elif user_role == 'candidate' %}
-            {% else %}
-            {% endif %}
-
+             
+        {% endif %}
+        
     </div>
 </main>
 </body>

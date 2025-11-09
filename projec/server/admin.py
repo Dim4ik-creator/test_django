@@ -123,3 +123,4 @@ class CandidateAdmin(admin.ModelAdmin):
         return redirect(request.META.get('HTTP_REFERER'))
     
 admin.site.register(Jobs)
+admin.site.register(Response)

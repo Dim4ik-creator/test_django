@@ -17,7 +17,7 @@
         <nav class="nav">
             <a href="{% url 'candidate_home' %}" class="nav-link">Главная</a>
             <a href="{% url 'profile_candidate' %}" class="nav-link active">Профиль</a>
-            <a href="#" class="nav-link">Вакансии</a>
+            <a href="{% url "job_list" %}" class="nav-link">Вакансии</a>
         </nav>
 
         <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>

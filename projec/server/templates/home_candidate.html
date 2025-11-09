@@ -16,10 +16,10 @@
         <nav class="nav">
             <a href="{% url 'candidate_home' %}" class="nav-link active">Главная</a>
             <a href="{% url 'profile_candidate' %}" class="nav-link">Профиль</a>
-            <a href="#" class="nav-link">Вакансии</a>
+            <a href="{% url "job_list" %}" class="nav-link">Вакансии</a>
         </nav>
 
-        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Вый</button>
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
         </a>
     </header>
 

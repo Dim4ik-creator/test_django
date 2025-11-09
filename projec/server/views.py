@@ -32,7 +32,7 @@ class LoginPageView(FormView):
             if candidate.is_banned:
                 messages.error(
                     self.request,
-                    f"Ваш аккаунт заблокирован по причине: {candidate.ban_reason}",
+                    f"Ваш аккаунт заблокирован по причине: {candidate.ban_reason}", extra_tags='login',
                 )
                 return redirect("login")
             if check_password(password, candidate.password):
@@ -47,7 +47,7 @@ class LoginPageView(FormView):
             if leader.is_banned:
                 messages.error(
                     self.request,
-                    f"Ваш аккаунт заблокирован по причине: {leader.ban_reason}",
+                    f"Ваш аккаунт заблокирован по причине: {leader.ban_reason}", extra_tags='login',
                 )
                 return redirect("login")
             if check_password(password, leader.password):
@@ -304,6 +304,37 @@ class JobDetailView(View):
     def post(self, request, job_id):
             # Проверяем, это отклик КАНДИДАТА или редактирование РУКОВОДИТЕЛЯ?
             action = request.POST.get('action')
+            if action == 'delete':
+                user_type = request.session.get('user_type')
+                user_email = request.session.get('user_email')
+                
+                # Проверка, что это руководитель
+                if user_type != 'leader' or not user_email:
+                    messages.error(request, "Ошибка доступа. Только руководитель может удалять вакансии.")
+                    return redirect("job_detail", job_id=job_id)
+
+                job = get_object_or_404(Jobs, id=job_id)
+                
+                # Находим руководителя и проверяем, что он владелец
+                try:
+                    leader = Leader.objects.get(email=user_email)
+                    if job.leader != leader:
+                        messages.error(request, "У вас нет прав на удаление этой вакансии.")
+                        return redirect("job_detail", job_id=job_id)
+                except Leader.DoesNotExist:
+                    messages.error(request, "Ошибка аутентификации.")
+                    return redirect("login")
+
+                # Выполняем удаление
+                try:
+                    job.delete()
+                    messages.success(request, "Вакансия успешно удалена.")
+                    # Редирект на список вакансий руководителя
+                    return redirect("my_jobs") 
+                except Exception as e:
+                    messages.error(request, f"Ошибка при удалении: {e}")
+                    return redirect("job_detail", job_id=job_id)
+            
             if action == 'edit':
                 user_type = request.session.get('user_type')
                 user_email = request.session.get('user_email')
@@ -400,6 +431,41 @@ class MyJobsView(View):
         jobs = leader.jobs.all()
         return render(request, "my_jobs.html", {"jobs": jobs})
     
+
+class ResponceView(View):
+    def get(self, request, job_id):
+        user_type = request.session.get('user_type')
+        user_email = request.session.get('user_email')
+        job = get_object_or_404(Jobs, id=job_id)
+
+        try:
+            leader = Leader.objects.get(email=user_email)
+            
+            if job.leader != leader:
+                messages.error(request, "У вас нет прав для просмотра откликов на эту вакансию.")
+                return redirect("my_jobs")
+                
+        except Leader.DoesNotExist:
+            messages.error(request, "Ошибка аутентификации руководителя.")
+            request.session.flush()
+            return redirect("login")
+        
+        responses = Response.objects.filter(job=job).select_related('candidate').order_by('-created_at')
+        
+        context = {
+            'job': job,
+            'responses': responses,
+            'user_role': 'leader',
+        }
+        
+        return render(request, 'view_responses.html', context)
+    def post(self, request, job_id):
+        # Если вы захотите добавить функционал "Принять/Отклонить" отклик, 
+        # то логика POST будет добавлена здесь.
+        messages.error(request, "Недопустимый метод запроса.")
+        return redirect("view_responses", job_id=job_id)    
+    
+
 # Функция для выхода из аккаунта
 def logout_view(request):
     request.session.flush()
