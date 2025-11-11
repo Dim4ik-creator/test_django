@@ -91,6 +91,7 @@ class ProfCandidatePageView(CandidateOnlyMixin, View):
 
         candidate.name = request.POST.get("name", candidate.name)
         candidate.email = request.POST.get("email", candidate.email)
+        candidate.bio = request.POST.get("bio", candidate.email) 
         request.session['user_email'] = candidate.email
         request.session['user_name'] = candidate.name
         candidate.save()

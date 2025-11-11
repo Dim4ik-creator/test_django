@@ -17,6 +17,7 @@ body {
     margin: 60px auto;
     padding: 20px;
     font-family: "Inter", sans-serif;
+    gap: 20px;
 }
 /* ======= ЗАГОЛОВОК И КНОПКА ======= */
 .jobs-header {
@@ -337,4 +338,27 @@ body {
 
 .view-responses-btn {
     margin-left: 10px; 
+}
+.text-pad{
+    padding: 30px; /* ← здесь задаётся внутренний отступ */
+}
+.responses-container {
+    margin: 0 auto;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* ← добавляет равномерный отступ между всеми дочерними блоками */
+}
+.responses-container a{
+    width: 230px;
+}
+.response-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px; /* ← расстояние между секциями внутри карточки */
+}
+
+/* Информация о кандидате */
+.candidate-info h3 {
+    margin-bottom: 4px;
 }

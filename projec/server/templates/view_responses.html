@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobMatch — Отклики на {{ job.title }}</title>
     <link rel="stylesheet" href="{% static 'css/vacan.css' %}">
-    <link rel="stylesheet" href="{% static 'css/response_list.css' %}">
 </head>
 
 <body>
@@ -25,12 +24,12 @@
         <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
     </header>
 
-    <main class="main-content">
-        <div class="responses-container">
+    <main class="main-content" style:"padding: 10px;">
+        <div class="responses-container" >
 
-            <div class="page-header">
+            <div class="page-header ">
                 <h2>Отклики на вакансию: **{{ job.title }}**</h2>
-                <p class="response-count">Всего откликов: **{{ responses|length }}**</p>
+                <p class="response-count">Всего откликов: {{ responses|length }}</p>
             </div>
             
             <a href="{% url 'job_detail' job.id %}" class="back-link secondary-btn">
@@ -48,9 +47,9 @@
                             <p class="candidate-meta">
                                 <span class="icon">📧</span> {{ response.candidate.email }}
                             </p>
-                            {% comment %} <p class="candidate-meta">
-                                <span class="icon">📍</span> {{ response.candidate.city|default:"Не указан" }}
-                            </p> {% endcomment %}
+                            <p class="candidate-meta">
+                                <span>📖</span>{{ response.candidate.bio|default:"Не указан" }}
+                            </p>
                             <p class="response-date">
                                 <span class="icon">⏰</span> Отправлен: {{ response.created_at|date:"d M Y в H:i" }}
                             </p>
