@@ -140,3 +140,55 @@ body {
         padding: 30px 20px;
     }
 }
+@media (max-width: 700px) {
+    .header {
+        padding: 10px 15px; /* Уменьшаем отступы по бокам */
+        flex-wrap: wrap; /* Позволяем элементам переноситься на новую строку */
+        align-items: flex-start; /* Выравнивание элементов первой строки */
+    }
+
+    /* Навигация будет отображаться */
+    .nav {
+        /* *** УДАЛЯЕМ display: none; *** */
+        display: flex; /* Сохраняем flex-контейнер */
+        width: 100%; /* Занимает всю ширину Header */
+        gap: 0; /* Убираем стандартный большой отступ */
+        justify-content: space-around; /* Равномерно распределяем ссылки */
+        margin-top: 10px; /* Отступ от верхней строки (лого и кнопка) */
+        
+        /* Гарантируем, что NAV всегда будет на второй строке */
+        order: 2; 
+    }
+    
+    .logo {
+        order: 1;
+    }
+    
+    .logout-btn {
+        order: 1;
+    }
+
+    .nav-link {
+        font-size: 13px; /* Уменьшаем размер текста для компактности */
+        padding: 5px 0; /* Добавляем вертикальный паддинг для удобства нажатия */
+    }
+
+    /* Уменьшаем размер логотипа и кнопки для мобильного вида */
+    .logo img {
+        height: 30px;
+        width: 35px;
+    }
+
+    .logo-text {
+        font-size: 18px;
+    }
+
+    .logout-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    .welcome h1 {
+        font-size: 22px;
+    }
+}
