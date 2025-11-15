@@ -1,0 +1,249 @@
+/* ====== СБРОС ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+    color: #111;
+}
+
+/* ====== HEADER ====== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: white;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;     /* убираем подчеркивание */
+    color: #0d47a1;            /* насыщенный синий */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.logo:hover {
+    color: #1976d2;            /* подсветка при наведении */
+    transform: scale(1.03);
+}
+
+.logo img {
+    height: 35px;
+    width: 40px;
+    margin-right: 10px; 
+}
+
+.logo span {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.logo-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-outline,
+.btn-solid {
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-outline {
+    background: white;
+    color: #1a3263;
+}
+
+.btn-outline:hover {
+    background: #f3f3f3;
+}
+
+.btn-solid {
+    background: #1a3263;
+    color: white;
+}
+
+.btn-solid:hover {
+    background: #243e7a;
+}
+
+/* ====== HERO ====== */
+.hero {
+    position: relative;
+    flex: 1; /* растягивает секцию, чтобы футер оставался внизу */
+    background-image: url('/static/png/office-bg.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-about {
+    background: url('/static/png/office-bg.png') center/cover no-repeat;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    position: relative;
+}
+.hero-about::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+.hero-about .overlay {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+}
+.about-text {
+    max-width: 900px;
+    margin: 40px auto;
+    line-height: 1.7;
+    font-size: 1.1rem;
+    color: #333;
+}
+.about-text h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    color: #222;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.overlay h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.buttons button {
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: 0.3s;
+}
+
+.buttons button:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* ====== FOOTER ====== */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    color: #000;
+    font-size: 14px;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 10;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+}
+
+.footer p {
+    margin-bottom: 5px;
+}
+
+
+
+
+
+/* ====== АДАПТИВ ====== */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 25px;
+    }
+
+    .auth-buttons {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .overlay h1 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .buttons button {
+        width: 200px;
+    }
+
+    .footer {
+        font-size: 13px;
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .overlay h1 {
+        font-size: 1.3rem;
+    }
+
+    .footer {
+        font-size: 12px;
+        padding: 10px 15px;
+    }
+}

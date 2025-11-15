@@ -1,0 +1,193 @@
+/* ====== Общие стили ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ffffff, #2a2a4a);
+    color: white;
+}
+
+/* ====== Header ====== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #0d47a1;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.logo:hover {
+    color: #1976d2;
+    transform: scale(1.03);
+}
+
+.logo img {
+    height: 35px;
+    width: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 22px;
+}
+
+/* ====== Контейнер ====== */
+.register-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 420px;
+    width: 100%;
+}
+
+/* ====== Переключатель ролей ====== */
+.role-switch {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+}
+
+.role-btn {
+    flex: 1;
+    text-align: center;
+    background: #cfe2ee;
+    color: #14276d;
+    font-weight: 700;
+    padding: 12px 0;
+    border-radius: 25px;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.role-btn:hover {
+    background: #76a8cd;
+    color: white;
+}
+
+.role-btn.active {
+    background: #76a8cd;
+    color: white;
+}
+
+/* ====== Форма ====== */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.register-form label {
+    font-weight: 700;
+    color: #14276d;
+}
+
+.register-form input {
+    border: none;
+    outline: none;
+    background: #cfe2ee;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    color: #0e1a3c;
+}
+
+.register-form input::placeholder {
+    color: #7da0ba;
+}
+
+.register-form button {
+    background: #76a8cd;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-form button:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ====== Ссылка на вход ====== */
+.register-text {
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    margin-top: 15px;
+}
+
+.register-text a {
+    color: #0d47a1;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.register-text a:hover {
+    color: #1976d2;
+}
+
+.terms {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #14276d;
+    margin-top: 10px;
+}
+
+.terms input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #76a8cd; /* Цвет галочки под твой стиль */
+    cursor: pointer;
+}
+
+.terms a {
+    color: #0d47a1;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.terms a:hover {
+    color: #1976d2;
+}
+
+
+/* ====== Адаптив ====== */
+@media (max-width: 700px) {
+    .register-container {
+        width: 90%;
+        padding: 30px 20px;
+    }
+}
